@@ -39,3 +39,43 @@ sudo ./install.sh
 ```
 
 ---
+
+## Requirements
+
+- Python 3.6+
+- `iproute2` package (`ip` command must be available)
+- Linux system
+
+---
+
+## Usage
+
+```bash
+routekit [commmand] [arguments...]
+```
+
+### Examples
+
+```bash
+routekit show     # Show main routing table
+routekit show table local     # Show custom 'local' routing table
+routekit rules     # List routing rules
+routekit get 8.8.8.8     # Resolve route for 8.8.8.8
+routekit add default via 192.168.0.1 dev wlan0     # Add a default route
+routekit del default     # Delete the default route
+routekit interfaces     # List network interfaces
+```
+
+---
+
+## Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `show [table]` | Display the routing table (default: main) |
+| `rules` | Show routing rules (`ip rule show`) | 
+| `get <IP>` | Show how a specific destination is routed |
+| `add <ARGS>` | Add a route (e.g., `routekit add default via 1.1.1.1 dev eth0) |
+| `del <ARGS>` | Delete a route |
+| `interfaces` | Show all network interfaces and their IPs |
+
