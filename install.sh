@@ -9,6 +9,11 @@ fi
 INSTALL_PATH="/usr/bin/routekit"
 SRC_FILE="routekit"
 
+if [[ ! -f "$SRC_FILE" ]]; then
+    echo "Source file '$SRC_FILE' not found in current directory."
+    exit 1
+fi
+
 cp "$SRC_FILE" "$INSTALL_PATH"
 
 chmod +x "$INSTALL_PATH"
