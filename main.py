@@ -156,7 +156,7 @@ routekit show table local  # Show local routing table
                 table = args.table
             routekit.show_routes(table)
     except KeyboardInterrupt:
-        print(f"n\{Colors.WARNING}Operation cancelled by user.{Colors.ENDC}")
+        print(f"\n{Colors.WARNING}Operation cancelled by user.{Colors.ENDC}")
         sys.exit(1)
     except Exception as e:
         print(f"{Colors.FAIL}Error: {e}{Colors.ENDC}")
