@@ -10,8 +10,8 @@ depends=('python' 'iproute2')
 makedepends=('git')
 provides=('routekit')
 conflicts=('routekit')
-source=("routekit", "LICENSE", "README.md")
-sha256sums=('SKIP')
+source=("routekit" "LICENSE" "README.md")
+sha256sums=('SKIP' 'SKIP' 'SKIP')
 
 package() {
     install -Dm755 "$srcdir/routekit" "$pkgdir/usr/bin/routekit"

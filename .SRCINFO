@@ -10,9 +10,11 @@ pkgbase = routekit
 	depends = iproute2
 	provides = routekit
 	conflicts = routekit
-	source = routekit,
-	source = LICENSE,
+	source = routekit
+	source = LICENSE
 	source = README.md
+	sha256sums = SKIP
+	sha256sums = SKIP
 	sha256sums = SKIP
 
 pkgname = routekit
