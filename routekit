@@ -121,6 +121,33 @@ class RouteKit:
                       f"{route.metric:<8} "
                       f"{route.scope:<10} "
                       f"{route.proto:<10}")
+                
+    def show_rules(self) -> None:
+        print(self.format_table_header(" Routing Rules "))
+        
+        success, output = self.run_command(["ip", "rule", "show"])
+        if not success:
+            print(f"{Colors.FAIL}Error: {output}{Colors.ENDC}")
+            return
+        if not output:
+            print(f"{Colors.WARNING}No routing rules found.{Colors.ENDC}")
+            return
+        
+        print(f"\n{Colors.BOLD}{Colors.BLUE}{'Priority':<10} {'Rule':<50} {'Table':<10}{Colors.ENDC}")
+        print(f"{Colors.BLUE}{'-' * 10} {'-' * 50} {'-' * 10}{Colors.ENDC}")
+        
+        for line in output.split('\n'):
+            if ":" in line:
+                parts = line.split(":", 1)
+                priority = parts[0].strip()
+                rule_parts = parts[1].split()
+                
+                rule_text = ' '.join(rule_parts[:-2] if len(rule_parts) > 2 else rule_parts)
+                table = rule_parts[-1] if rule_parts and rule_parts[-2] == "lookup" else ""
+                
+                print(f"{Colors.GREEN}{priority:<10}{Colors.ENDC} "
+                      f"{Colors.CYAN}{rule_text:<50}{Colors.ENDC} "
+                      f"{Colors.WARNING}{table:<10}{Colors.ENDC}")
         
 def main():
     parser = argparse.ArgumentParser(
@@ -130,7 +157,7 @@ def main():
 Examples:
 routekit show  # Show routing table
 routekit show table local  # Show local routing table
-
+routekit rules  # Show routing rules
         """
     )
     
@@ -139,6 +166,8 @@ routekit show table local  # Show local routing table
     show_parser = subparsers.add_parser('show', help="Show routing table")
     show_parser.add_argument('table', nargs='?', default='main', help="Specify routing table (default: main)")
     show_parser.add_argument('table_name', nargs='?', help="Name of the routing table to show")
+    
+    subparsers.add_parser('rules', help="Show routing rules")
     
     args = parser.parse_args()
     
@@ -155,6 +184,10 @@ routekit show table local  # Show local routing table
             elif hasattr(args, 'table') and args.table != 'main':
                 table = args.table
             routekit.show_routes(table)
+            
+        elif args.command == 'rules':
+            routekit.show_rules()
+            
     except KeyboardInterrupt:
         print(f"\n{Colors.WARNING}Operation cancelled by user.{Colors.ENDC}")
         sys.exit(1)
