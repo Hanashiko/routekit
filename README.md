@@ -1,44 +1,38 @@
 # routekit
 
-**RouteKit** is a visual and user-friendly CLI utility for managing and inspecting Linux routing tables and rules. It wraps the powerful `ip route`, `ip rule`, and `ip link` commands into a colorful and structured interface, making it easier to understand and work with complex routing configurations.
+**routekit** is a powerful, colorful, and user-friendly command-line utility for visualizing and managing Linux routing tables, rules, and network interfaces. It provides human-readable output with enhanced formatting, ideal for both sysadmins and power users.
+
+![License](https://img.shields.io/github/license/hanashiko/routekit)
+![AUR](https://img.shields.io/aur/version/routekit?color=blue)
+![Platform](https://img.shields.io/badge/platform-Linux-green)
+![Python](https://img.shields.io/badge/python-3.6%2B-blue)
 
 ## Features
 
-- Display routing tables with color-coded, readable output
-- Inspect advanced routing rules
-- Show detailed `ip route get` path to any destination
-- List network interfaces with state and IP addresses
-- Add or delete routes from the system
-- Minimal dependencies: just Python and `iproute2`
-
----
-
-## 🧰 Requirements
-
-- Python 3.6+
-- Linux system with `iproute2` installed
-- Root privileges for `add` and `del` route operations
+- View routing tables (including custom ones).
+- how advanced routing rules.
+- Get detailed route resolution to a specific destination.
+- Add and ➖ remove routes (requires root).
+- List available network interfaces and IP addresses.
+- Terminal colorized output for readability.
+- Packaged as a full CLI tool.
+- Available on the AUR: [`routekit`](https://aur.archlinux.org/packages/routekit)
 
 ---
 
 ## Installation
 
-### Option 1: Clone & Run
-
-```bash
-git clone https://github.com/youruser/routekit.git
-cd routekit
-chmod +x routekit
-sudo ./routekit show
-```
-
-### Option 2: AUR (for Arch Linux users)
+### From AUR (Recommended for Arch Linux users)
 
 ```bash
 yay -S routekit
 ```
 
----
+### Manual Installation
 
-## Usage
-
+Clone the repository and install manually:
+```bash
+git clone https://github.com/hanashiko/routekit.git
+cd routekit
+sudo install -Dm755 routekit /usr/local/bin/routekit
+```
