@@ -8,8 +8,15 @@ url="https://github.com/Hanashiko/routekit"
 license=('MIT')
 depends=('python' 'iproute2')
 makedepends=('git')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/Hanashiko/$pkgname/archive/v$pkgver.tar.gz")
+provides=('routekit')
+conflicts=('routekit')
+source=("git+https://github.com/Hanashiko/$pkgname.git")
 sha256sums=('SKIP')
+
+pkgver() {
+    cd "$srcdir/$pkgname"
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
 
 build() {
     cd "$srcdir/$pkgname-$pkgver"
