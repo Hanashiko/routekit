@@ -1,6 +1,6 @@
 # Maintainer: Hanashiko <hlichisper@gmail.com>
 pkgname=routekit
-pkgver=0.1.1
+pkgver=0.1.2
 pkgrel=1
 pkgdesc="A tool for managing and visualizing network routes"
 arch=('any')
