@@ -91,7 +91,7 @@ class RouteKit:
         return f"\n{Colors.BOLD}{Colors.CYAN}{line}{Colors.ENDC}\n{Colors.BOLD}{Colors.HEADER}{title:^80}{Colors.ENDC}\n{Colors.BOLD}{Colors.CYAN}{line}{Colors.ENDC}"
     
     def show_routes(self, table: str = "main") -> None:
-        print(self.format_table_header(f" Routing Table: ({table}) "))
+        print(self.format_table_header(f"🛣️  Routing Table: ({table}) "))
         
         cmd = ["ip", "route", "show"]
         if table != "main":
@@ -99,11 +99,11 @@ class RouteKit:
             
         success, output = self.run_command(cmd)
         if not success:
-            print(f"{Colors.FAIL}Error: {output}{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ Error: {output}{Colors.ENDC}")
             return
         
         if not output:
-            print(f"{Colors.WARNING}No routes found in table '{table}'.{Colors.ENDC}")
+            print(f"{Colors.WARNING}⚠️  No routes found in table '{table}'.{Colors.ENDC}")
             return
         
         print(f"\n{Colors.BOLD}{Colors.BLUE}{'Destination':<20} {'Gateway':<15} {'Interface':<10} {'Metric':<8} {'Scope':<10} {'Proto':<10}{Colors.ENDC}")
@@ -123,14 +123,14 @@ class RouteKit:
                       f"{route.proto:<10}")
                 
     def show_rules(self) -> None:
-        print(self.format_table_header(" Routing Rules "))
+        print(self.format_table_header("📋 Routing Rules"))
         
         success, output = self.run_command(["ip", "rule", "show"])
         if not success:
-            print(f"{Colors.FAIL}Error: {output}{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ Error: {output}{Colors.ENDC}")
             return
         if not output:
-            print(f"{Colors.WARNING}No routing rules found.{Colors.ENDC}")
+            print(f"{Colors.WARNING}⚠️  No routing rules found.{Colors.ENDC}")
             return
         
         print(f"\n{Colors.BOLD}{Colors.BLUE}{'Priority':<10} {'Rule':<50} {'Table':<10}{Colors.ENDC}")
@@ -150,11 +150,11 @@ class RouteKit:
                       f"{Colors.WARNING}{table:<10}{Colors.ENDC}")
                 
     def route_get(self, destination: str) -> None:
-        print(self.format_table_header(f" Route for {destination} "))
+        print(self.format_table_header(f"🎯 Route for {destination} "))
         
         success, output = self.run_command(["ip", "route", "get", destination])
         if not success:
-            print(f"{Colors.FAIL}Error: {output}{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ Error: {output}{Colors.ENDC}")
             return
         
         lines = output.split('\n')
@@ -180,38 +180,38 @@ class RouteKit:
                 
     def add_route(self, args: List[str]):
         if not self.is_root:
-            print(f"{Colors.FAIL}Error: This command requires root privileges.{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ Error: This command requires root privileges.{Colors.ENDC}")
             return
         
         cmd = ["ip", "route", "add"] + args
-        print(f"{Colors.CYAN} Executing command: {' '.join(cmd)}{Colors.ENDC}")
+        print(f"{Colors.CYAN}🔧 Executing command: {' '.join(cmd)}{Colors.ENDC}")
         
         success, output = self.run_command(cmd)
         if success:
-            print(f"{Colors.GREEN}Route added successfully.{Colors.ENDC}")
+            print(f"{Colors.GREEN}✅ Route added successfully.{Colors.ENDC}")
         else:
-            print(f"{Colors.FAIL}Error adding route: {output}{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ Error adding route: {output}{Colors.ENDC}")
             
     def delete_route(self, args: List[str]):
         if not self.is_root:
-            print(f"{Colors.FAIL} Error: This command requires root privileges.{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ Error: This command requires root privileges.{Colors.ENDC}")
             return
         
         cmd = ["ip", "route", "del"] + args
-        print(f"{Colors.CYAN} Executing command: {' '.join(cmd)}{Colors.ENDC}")
+        print(f"{Colors.CYAN}🔧 Executing command: {' '.join(cmd)}{Colors.ENDC}")
         
         success, output = self.run_command(cmd)
         if success:
-            print(f"{Colors.GREEN}Route deleted successfully.{Colors.ENDC}")
+            print(f"{Colors.GREEN}✅ Route deleted successfully.{Colors.ENDC}")
         else:
-            print(f"{Colors.FAIL}Error deleting route: {output}{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ Error deleting route: {output}{Colors.ENDC}")
                 
     def show_interfaces(self):
-        print(self.format_table_header(" Network Interfaces"))
+        print(self.format_table_header("🌐 Network Interfaces"))
         
         success, output = self.run_command(["ip", "link", "show"])
         if not success:
-            print(f"{Colors.FAIL}Error: {output}{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ Error: {output}{Colors.ENDC}")
             return
         
         interfaces = []
@@ -315,10 +315,10 @@ routekit interfaces  # Show network interfaces
             routekit.show_interfaces()
             
     except KeyboardInterrupt:
-        print(f"\n{Colors.WARNING}Operation cancelled by user.{Colors.ENDC}")
+        print(f"\n{Colors.WARNING}⚠️  Operation cancelled by user.{Colors.ENDC}")
         sys.exit(1)
     except Exception as e:
-        print(f"{Colors.FAIL}Error: {e}{Colors.ENDC}")
+        print(f"{Colors.FAIL}❌ Unexpected error: {e}{Colors.ENDC}")
         sys.exit(1)
         
 if __name__ == "__main__":
