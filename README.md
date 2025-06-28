@@ -1,23 +1,44 @@
 # routekit
 
-A tool for managing and visualizing Linux routing tables.
+**RouteKit** is a visual and user-friendly CLI utility for managing and inspecting Linux routing tables and rules. It wraps the powerful `ip route`, `ip rule`, and `ip link` commands into a colorful and structured interface, making it easier to understand and work with complex routing configurations.
 
 ## Features
 
-- Displays routing tables in a structured and colored format
-- Supports alternative routing tables (e.g. `local`, `main`, etc.)
-- Root check and graceful error handling
+- Display routing tables with color-coded, readable output
+- Inspect advanced routing rules
+- Show detailed `ip route get` path to any destination
+- List network interfaces with state and IP addresses
+- Add or delete routes from the system
+- Minimal dependencies: just Python and `iproute2`
 
-## Usage
+---
 
-```bash
-routekit show                # Show main routing table
-routekit show table local   # Show local routing table
-```
+## 🧰 Requirements
+
+- Python 3.6+
+- Linux system with `iproute2` installed
+- Root privileges for `add` and `del` route operations
+
+---
 
 ## Installation
 
-Install from AUR:
+### Option 1: Clone & Run
+
+```bash
+git clone https://github.com/youruser/routekit.git
+cd routekit
+chmod +x routekit
+sudo ./routekit show
+```
+
+### Option 2: AUR (for Arch Linux users)
+
 ```bash
 yay -S routekit
 ```
+
+---
+
+## Usage
+
