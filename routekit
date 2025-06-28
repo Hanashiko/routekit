@@ -177,6 +177,48 @@ class RouteKit:
                 )
                 
                 print(f"  {formatted_line}")
+                
+    def show_interfaces(self):
+        print(self.format_table_header(" Network Interfaces"))
+        
+        success, output = self.run_command(["ip", "link", "show"])
+        if not success:
+            print(f"{Colors.FAIL}Error: {output}{Colors.ENDC}")
+            return
+        
+        interfaces = []
+        current_interface = None
+        
+        for line in output.split("\n"):
+            if re.match(r'^\d+:', line):
+                if current_interface:
+                    interfaces.append(current_interface)
+                parts = line.split()
+                name = parts[1].rstrip(':')
+                state = "UP" if "UP" in line else "DOWN"
+                current_interface = {
+                    'name': name,
+                    'state': state,
+                    'addresses': []
+                }
+            elif current_interface and "inet" in line:
+                addr_match = re.search(r'inet (\S+)', line)
+                if addr_match:
+                    current_interface["addresses"].append(addr_match.group(1))
+        
+        if current_interface:
+            interfaces.append(current_interface)
+            
+        print(f"\n{Colors.BOLD}{Colors.BLUE}{'Interface':<15} {'State':<8} {'IP Address':<20}{Colors.ENDC}")
+        print(f"{Colors.BLUE}{'-' * 15} {'-' * 8} {'-' * 20}{Colors.ENDC}")
+        
+        for iface in interfaces:
+            state_color = Colors.GREEN if iface["state"] == "UP" else Colors.FAIL
+            addr_text = ", ".join(iface["addresses"]) if iface["addresses"] else "N/A"
+            
+            print(f"{Colors.CYAN}{iface['name']:<15}{Colors.ENDC} "
+                  f"{state_color}{iface['state']:<8}{Colors.ENDC} "
+                  f"{Colors.GREEN}{addr_text:<20}{Colors.ENDC}")
         
 def main():
     parser = argparse.ArgumentParser(
@@ -188,6 +230,7 @@ routekit show  # Show routing table
 routekit show table local  # Show local routing table
 routekit rules  # Show routing rules
 routekit get 8.8.8.8  # Get route for a specific destination
+routekit interfaces  # Show network interfaces
         """
     )
     
@@ -201,6 +244,8 @@ routekit get 8.8.8.8  # Get route for a specific destination
     
     get_parser = subparsers.add_parser('get', help='Get route for a specific destination')
     get_parser.add_argument('destination', help='Destination IP address or network')
+    
+    subparsers.add_parser('interfaces', help='Show network interfaces')
     
     args = parser.parse_args()
     
@@ -223,6 +268,9 @@ routekit get 8.8.8.8  # Get route for a specific destination
             
         elif args.command == 'get':
             routekit.route_get(args.destination)
+            
+        elif args.command == 'interfaces':
+            routekit.show_interfaces()
             
     except KeyboardInterrupt:
         print(f"\n{Colors.WARNING}Operation cancelled by user.{Colors.ENDC}")
