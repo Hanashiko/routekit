@@ -34,5 +34,8 @@ Clone the repository and install manually:
 ```bash
 git clone https://github.com/hanashiko/routekit.git
 cd routekit
-sudo install -Dm755 routekit /usr/local/bin/routekit
+chmod +x install.sh
+sudo ./install.sh
 ```
+
+---
