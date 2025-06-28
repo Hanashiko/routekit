@@ -10,27 +10,25 @@ depends=('python' 'iproute2')
 makedepends=('git')
 provides=('routekit')
 conflicts=('routekit')
-source=("git+https://github.com/Hanashiko/$pkgname.git")
+source=("main.py")
 sha256sums=('SKIP')
 
-pkgver() {
-    cd "$srcdir/$pkgname"
-    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
+# pkgver() {
+#     cd "$srcdir/$pkgname"
+#     printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+# }
 
-build() {
-    cd "$srcdir/$pkgname-$pkgver"
-    python -m py_compile routekit
-}
+# build() {
+#     cd "$srcdir/$pkgname-$pkgver"
+#     python -m py_compile routekit
+# }
 
-check() {
-    cd "$srcdir/$pkgname-$pkgver"
-    python routekit --help > /dev/null
-}
+# check() {
+#     cd "$srcdir/$pkgname-$pkgver"
+#     python routekit --help > /dev/null
+# }
 
 package() {
-    cd "$srcdir/$pkgname-$pkgver"
-    
-    install -Dm755 routekit "$pkgdir/usr/bin/routekit"
+    install -Dm755 "$srcdir/main.py" "$pkgdir/usr/bin/routekit"
     
 }
