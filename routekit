@@ -148,6 +148,35 @@ class RouteKit:
                 print(f"{Colors.GREEN}{priority:<10}{Colors.ENDC} "
                       f"{Colors.CYAN}{rule_text:<50}{Colors.ENDC} "
                       f"{Colors.WARNING}{table:<10}{Colors.ENDC}")
+                
+    def route_get(self, destination: str) -> None:
+        print(self.format_table_header(f" Route for {destination} "))
+        
+        success, output = self.run_command(["ip", "route", "get", destination])
+        if not success:
+            print(f"{Colors.FAIL}Error: {output}{Colors.ENDC}")
+            return
+        
+        lines = output.split('\n')
+        for line in lines:
+            if line.strip():
+                formatted_line = line
+                keywords = ["via", "dev", "src", "uid", "cache"]
+                for keyword in keywords:
+                    formatted_line = re.sub(
+                        f'\\b{keyword}\\b',
+                        f'{Colors.BOLD}{Colors.BLUE}{keyword}{Colors.ENDC}',
+                        formatted_line
+                    )
+                    
+                ip_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
+                formatted_line = re.sub(
+                    ip_pattern,
+                    lambda m: f'{Colors.GREEN}{m.group()}{Colors.ENDC}',
+                    formatted_line
+                )
+                
+                print(f"  {formatted_line}")
         
 def main():
     parser = argparse.ArgumentParser(
@@ -158,6 +187,7 @@ Examples:
 routekit show  # Show routing table
 routekit show table local  # Show local routing table
 routekit rules  # Show routing rules
+routekit get 8.8.8.8  # Get route for a specific destination
         """
     )
     
@@ -168,6 +198,9 @@ routekit rules  # Show routing rules
     show_parser.add_argument('table_name', nargs='?', help="Name of the routing table to show")
     
     subparsers.add_parser('rules', help="Show routing rules")
+    
+    get_parser = subparsers.add_parser('get', help='Get route for a specific destination')
+    get_parser.add_argument('destination', help='Destination IP address or network')
     
     args = parser.parse_args()
     
@@ -187,6 +220,9 @@ routekit rules  # Show routing rules
             
         elif args.command == 'rules':
             routekit.show_rules()
+            
+        elif args.command == 'get':
+            routekit.route_get(args.destination)
             
     except KeyboardInterrupt:
         print(f"\n{Colors.WARNING}Operation cancelled by user.{Colors.ENDC}")
