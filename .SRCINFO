@@ -1,14 +1,20 @@
 pkgbase = routekit
 	pkgdesc = A tool for managing and visualizing network routes
 	pkgver = 0.1.0
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/Hanashiko/routekit
 	arch = any
 	license = MIT
 	makedepends = git
 	depends = python
 	depends = iproute2
-	source = routekit-0.1.0.tar.gz::https://github.com/Hanashiko/routekit/archive/v0.1.0.tar.gz
+	provides = routekit
+	conflicts = routekit
+	source = routekit
+	source = LICENSE
+	source = README.md
+	sha256sums = SKIP
+	sha256sums = SKIP
 	sha256sums = SKIP
 
 pkgname = routekit
