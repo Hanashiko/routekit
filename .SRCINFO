@@ -10,7 +10,7 @@ pkgbase = routekit
 	depends = iproute2
 	provides = routekit
 	conflicts = routekit
-	source = main.py
+	source = routekit
 	sha256sums = SKIP
 
 pkgname = routekit
