@@ -79,3 +79,14 @@ routekit interfaces     # List network interfaces
 | `del <ARGS>` | Delete a route |
 | `interfaces` | Show all network interfaces and their IPs |
 
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+### Author
+
+Hanashiko
