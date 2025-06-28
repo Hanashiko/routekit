@@ -178,6 +178,20 @@ class RouteKit:
                 
                 print(f"  {formatted_line}")
                 
+    def add_route(self, args: List[str]):
+        if not self.is_root:
+            print(f"{Colors.FAIL}Error: This command requires root privileges.{Colors.ENDC}")
+            return
+        
+        cmd = ["ip", "route", "add"] + args
+        print(f"{Colors.CYAN} Executing command: {' '.join(cmd)}{Colors.ENDC}")
+        
+        success, output = self.run_command(cmd)
+        if success:
+            print(f"{Colors.GREEN}Route added successfully.{Colors.ENDC}")
+        else:
+            print(f"{Colors.FAIL}Error adding route: {output}{Colors.ENDC}")
+                
     def show_interfaces(self):
         print(self.format_table_header(" Network Interfaces"))
         
@@ -230,6 +244,7 @@ routekit show  # Show routing table
 routekit show table local  # Show local routing table
 routekit rules  # Show routing rules
 routekit get 8.8.8.8  # Get route for a specific destination
+routekit add default via 192.168.1.1 dev wlan0  # Add a route
 routekit interfaces  # Show network interfaces
         """
     )
@@ -244,6 +259,9 @@ routekit interfaces  # Show network interfaces
     
     get_parser = subparsers.add_parser('get', help='Get route for a specific destination')
     get_parser.add_argument('destination', help='Destination IP address or network')
+    
+    add_parser = subparsers.add_parser('add', help='Add a route')
+    add_parser.add_argument('route_args', nargs='+', help='Route parameters')
     
     subparsers.add_parser('interfaces', help='Show network interfaces')
     
@@ -268,6 +286,9 @@ routekit interfaces  # Show network interfaces
             
         elif args.command == 'get':
             routekit.route_get(args.destination)
+            
+        elif args.command == "add":
+            routekit.add_route(args.route_args)
             
         elif args.command == 'interfaces':
             routekit.show_interfaces()
