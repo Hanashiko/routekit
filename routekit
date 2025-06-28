@@ -191,6 +191,20 @@ class RouteKit:
             print(f"{Colors.GREEN}Route added successfully.{Colors.ENDC}")
         else:
             print(f"{Colors.FAIL}Error adding route: {output}{Colors.ENDC}")
+            
+    def delete_route(self, args: List[str]):
+        if not self.is_root:
+            print(f"{Colors.FAIL} Error: This command requires root privileges.{Colors.ENDC}")
+            return
+        
+        cmd = ["ip", "route", "del"] + args
+        print(f"{Colors.CYAN} Executing command: {' '.join(cmd)}{Colors.ENDC}")
+        
+        success, output = self.run_command(cmd)
+        if success:
+            print(f"{Colors.GREEN}Route deleted successfully.{Colors.ENDC}")
+        else:
+            print(f"{Colors.FAIL}Error deleting route: {output}{Colors.ENDC}")
                 
     def show_interfaces(self):
         print(self.format_table_header(" Network Interfaces"))
@@ -245,6 +259,7 @@ routekit show table local  # Show local routing table
 routekit rules  # Show routing rules
 routekit get 8.8.8.8  # Get route for a specific destination
 routekit add default via 192.168.1.1 dev wlan0  # Add a route
+routekit del default  # Delete a route
 routekit interfaces  # Show network interfaces
         """
     )
@@ -262,6 +277,9 @@ routekit interfaces  # Show network interfaces
     
     add_parser = subparsers.add_parser('add', help='Add a route')
     add_parser.add_argument('route_args', nargs='+', help='Route parameters')
+    
+    del_parser = subparsers.add_parser('del', help='Delete a route')
+    del_parser.add_argument('route_args', nargs='+', help='Route parameters to delete')
     
     subparsers.add_parser('interfaces', help='Show network interfaces')
     
@@ -289,6 +307,9 @@ routekit interfaces  # Show network interfaces
             
         elif args.command == "add":
             routekit.add_route(args.route_args)
+            
+        elif args.command == "del":
+            routekit.delete_route(args.route_args)
             
         elif args.command == 'interfaces':
             routekit.show_interfaces()
